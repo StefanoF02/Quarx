@@ -1,7 +1,6 @@
 package com.quarx.Quarx.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
@@ -23,13 +22,15 @@ public class Member {
     private String username;
     @Column(name = "password", nullable = false)
     private String password;
-
     @Column(name = "active")
     private Integer active = 1;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "member")
-    private Set<Friend> friends = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(name = "user_friends",
+        joinColumns = @JoinColumn(name = "memberId") ,
+        inverseJoinColumns = @JoinColumn(name = "friendId") )
+    private Set<Member> friendList = new HashSet<>();
 
     public Member(){
 
