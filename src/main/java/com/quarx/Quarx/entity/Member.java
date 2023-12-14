@@ -1,10 +1,13 @@
 package com.quarx.Quarx.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
-@Table(name="member")
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,9 +24,12 @@ public class Member {
     @Column(name = "password", nullable = false)
     private String password;
 
-
     @Column(name = "active")
     private Integer active = 1;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "member")
+    private Set<Friend> friends = new HashSet<>();
 
     public Member(){
 
