@@ -32,4 +32,10 @@ public class MemberServiceImpl implements MemberService{
     public Member saveUpdate(Member member) {
        return memberDAO.saveUpdate(member);
     }
+
+    @Override
+    @Transactional
+    public void delete(Integer id){
+        memberDAO.delete(id);
+    }
 }

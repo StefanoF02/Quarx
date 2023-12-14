@@ -2,7 +2,6 @@ package com.quarx.Quarx.dao;
 
 import com.quarx.Quarx.entity.Member;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -26,13 +25,17 @@ public class MemberDAOImpl implements MemberDAO{
 
     @Override
     public List<Member> getAllMembers() {
-        TypedQuery<Member> typedQuery =entityManager.createQuery("from members", Member.class);
-        List<Member> result = typedQuery.getResultList();
-        return result;
+        return entityManager.createQuery("from Member", Member.class).getResultList();
     }
 
     @Override
     public Member saveUpdate(Member member) {
         return entityManager.merge(member);
+    }
+
+    @Override
+    public void delete(Integer id){
+        Member member = entityManager.find(Member.class,id);
+        entityManager.remove(member);
     }
 }

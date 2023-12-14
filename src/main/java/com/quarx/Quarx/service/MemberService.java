@@ -12,6 +12,7 @@ public interface MemberService {
     public List<Member> getAllMembers();
     public Member saveUpdate(Member member);
 
+    public void delete(Integer id);
 
 
 }

@@ -4,19 +4,23 @@ package com.quarx.Quarx.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="members")
+@Table(name="member")
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(name = "firstname", nullable = false)
+    private String firstname;
+    @Column(name = "lastname", nullable = false)
+    private String lastname;
     @Column(name = "email", nullable = false, unique = true)
     private String email;
-
     @Column(name = "username", nullable = false, unique = true)
     private String username;
     @Column(name = "password", nullable = false)
     private String password;
+
 
     @Column(name = "active")
     private Integer active = 1;
@@ -25,7 +29,9 @@ public class Member {
 
     }
 
-    public Member(String email, String username, String password){
+    public Member(String firstname, String lastname, String email, String username, String password){
+        this.firstname = firstname;
+        this.lastname = lastname;
         this.email = email;
         this.username = username;
         this.password = password;

@@ -12,4 +12,6 @@ public interface MemberDAO {
 
     public Member saveUpdate(Member member);
 
+    public void delete(Integer id);
+
 }
