@@ -5,26 +5,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
-public class MemberFriend {
+public class MemberBlock {
+
     @ManyToOne
     @JoinColumn(name = "memberId")
     private Member member;
 
     @Id
     @Column
-    private int friendId;
-
-    //Set friend request on pending currently not working.
-    //    @Column
-    //    private String status = "pending";
-
-    public int getFriendId() {
-        return friendId;
-    }
-
-    public void setFriendId(int friendId) {
-        this.friendId = friendId;
-    }
+    private int blockId;
 
     public Member getMember() {
         return member;
@@ -34,5 +23,11 @@ public class MemberFriend {
         this.member = member;
     }
 
+    public int getBlockId() {
+        return blockId;
+    }
 
+    public void setBlockId(int blockId) {
+        this.blockId = blockId;
+    }
 }

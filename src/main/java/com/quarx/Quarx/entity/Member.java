@@ -28,10 +28,17 @@ public class Member {
 
 
     @ManyToMany
-    @JoinTable(name = "user_friends",
+    @JoinTable(name = "member_friends",
         joinColumns = @JoinColumn(name = "memberId") ,
         inverseJoinColumns = @JoinColumn(name = "friendId") )
     private Set<Member> friendList = new HashSet<>();
+
+
+    @ManyToMany
+    @JoinTable(name = "member_blocks",
+        joinColumns = @JoinColumn(name = "memberId"),
+        inverseJoinColumns = @JoinColumn(name = "blockId"))
+    private Set<Member> blockList = new HashSet<>();
 
     public Member(){
 
@@ -101,6 +108,15 @@ public class Member {
         this.friendList = friendList;
     }
 
+
+    public Set<Member> getBlockList() {
+        return blockList;
+    }
+
+    public void setBlockList(Set<Member> blockList) {
+        this.blockList = blockList;
+    }
+
     public void addMemberFriend(Member member){
         if(CollectionUtils.isEmpty(this.friendList)){
             this.friendList = new HashSet<>();
@@ -114,6 +130,22 @@ public class Member {
         }
     }
 
+    public void addMemberBlock(Member member){
+        if(CollectionUtils.isEmpty(this.blockList)){
+            this.blockList = new HashSet<>();
+
+        }
+        this.friendList.remove(member);
+        this.blockList.add(member);
+    }
+
+    public void removeMemberBlock(Member member){
+        if(this.blockList.contains(member)){
+            this.blockList.remove(member);
+        }
+    }
+
+
     @Override
     public String toString() {
         return "Member{" +
@@ -125,6 +157,7 @@ public class Member {
                 ", password='" + password + '\'' +
                 ", active=" + active +
                 ", friendList=" + friendList +
+                ", blockList=" + blockList +
                 '}';
     }
 }
