@@ -6,13 +6,16 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 public class MemberFriend {
+    @ManyToOne
+    @JoinColumn(name = "memberId")
+    private Member member;
+
     @Id
     @Column
     private int friendId;
 
-    @ManyToOne
-    @JoinColumn(name = "memberId")
-    private Member member;
+    @Column
+    private String status = "pending";
 
     public int getFriendId() {
         return friendId;
@@ -28,5 +31,13 @@ public class MemberFriend {
 
     public void setMember(Member member) {
         this.member = member;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

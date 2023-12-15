@@ -8,6 +8,8 @@ public interface MemberDAO {
 
     public Member getMember(Integer id);
 
+    public Member getByEmail(String email);
+
     public List<Member> getAllMembers();
 
     public Member saveUpdate(Member member);

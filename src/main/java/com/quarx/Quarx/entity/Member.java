@@ -2,6 +2,7 @@ package com.quarx.Quarx.entity;
 
 
 import jakarta.persistence.*;
+import org.springframework.util.CollectionUtils;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -44,12 +45,20 @@ public class Member {
         this.password = password;
     }
 
-    public Integer getId() {
-        return id;
+    public String getFirstname() {
+        return firstname;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
     public String getEmail() {
@@ -84,14 +93,38 @@ public class Member {
         this.active = active;
     }
 
+    public Set<Member> getFriendList() {
+        return friendList;
+    }
+
+    public void setFriendList(Set<Member> friendList) {
+        this.friendList = friendList;
+    }
+
+    public void addMemberFriend(Member member){
+        if(CollectionUtils.isEmpty(this.friendList)){
+            this.friendList = new HashSet<>();
+        }
+        this.friendList.add(member);
+    }
+
+    public void removeMemberFriend(Member member){
+        if(this.friendList.contains(member)){
+            this.friendList.remove(member);
+        }
+    }
+
     @Override
     public String toString() {
         return "Member{" +
                 "id=" + id +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
                 ", email='" + email + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", active=" + active +
+                ", friendList=" + friendList +
                 '}';
     }
 }

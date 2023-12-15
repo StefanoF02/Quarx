@@ -1,14 +1,16 @@
-package com.quarx.Quarx.dao;
+package com.quarx.Quarx.dao.impl;
 
+import com.quarx.Quarx.dao.MemberDAO;
 import com.quarx.Quarx.entity.Member;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public class MemberDAOImpl implements MemberDAO{
+public class MemberDAOImpl implements MemberDAO {
 
     private EntityManager entityManager;
 
@@ -20,6 +22,15 @@ public class MemberDAOImpl implements MemberDAO{
     @Override
     public Member getMember(Integer id) {
         Member member = entityManager.find(Member.class, id);
+        return member;
+    }
+
+    @Override
+    public Member getByEmail(String email) {
+
+        TypedQuery <Member> memberQuery = entityManager.createQuery("FROM Member WHERE email=:requestedEmail", Member.class);
+        memberQuery.setParameter("requestedEmail", email);
+        Member member = memberQuery.getSingleResult();
         return member;
     }
 

@@ -1,14 +1,16 @@
-package com.quarx.Quarx.service;
+package com.quarx.Quarx.service.impl;
 
 import com.quarx.Quarx.dao.MemberDAO;
 import com.quarx.Quarx.entity.Member;
+import com.quarx.Quarx.service.MemberService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
-public class MemberServiceImpl implements MemberService{
+public class MemberServiceImpl implements MemberService {
 
     private MemberDAO memberDAO;
 
@@ -19,6 +21,15 @@ public class MemberServiceImpl implements MemberService{
     @Override
     public Member getMember(Integer id) {
         Member member = memberDAO.getMember(id);
+        if(member == null){
+            return null;
+        }
+        return member;
+    }
+
+    @Override
+    public Member getByEmail(String email) {
+        Member member = memberDAO.getByEmail(email);
         return member;
     }
 
@@ -37,5 +48,12 @@ public class MemberServiceImpl implements MemberService{
     @Transactional
     public void delete(Integer id){
         memberDAO.delete(id);
+    }
+
+    @Override
+    public Set<Member> getFriendList(String email) {
+        Member member = memberDAO.getByEmail(email);
+        Set<Member> friendList = member.getFriendList();
+        return friendList;
     }
 }
