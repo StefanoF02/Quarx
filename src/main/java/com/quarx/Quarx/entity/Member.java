@@ -40,6 +40,10 @@ public class Member {
         inverseJoinColumns = @JoinColumn(name = "blockId"))
     private Set<Member> blockList = new HashSet<>();
 
+    @OneToMany(mappedBy = "creator")
+    private Set<Conversation> conversations;
+
+
     public Member(){
 
     }

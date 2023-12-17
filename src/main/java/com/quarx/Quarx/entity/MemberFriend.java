@@ -1,10 +1,8 @@
 package com.quarx.Quarx.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 
+@Table(name = "member_friends")
 public class MemberFriend {
     @ManyToOne
     @JoinColumn(name = "memberId")
