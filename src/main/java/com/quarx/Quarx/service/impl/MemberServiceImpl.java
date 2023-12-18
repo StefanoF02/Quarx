@@ -7,7 +7,6 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class MemberServiceImpl implements MemberService {
@@ -50,10 +49,4 @@ public class MemberServiceImpl implements MemberService {
         memberDAO.delete(id);
     }
 
-    @Override
-    public Set<Member> getFriendList(String email) {
-        Member member = memberDAO.getByEmail(email);
-        Set<Member> friendList = member.getFriendList();
-        return friendList;
-    }
 }

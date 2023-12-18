@@ -27,11 +27,8 @@ public class Member {
     private Integer active = 1;
 
 
-    @ManyToMany
-    @JoinTable(name = "member_friends",
-        joinColumns = @JoinColumn(name = "memberId") ,
-        inverseJoinColumns = @JoinColumn(name = "friendId") )
-    private Set<Member> friendList = new HashSet<>();
+    @OneToMany(mappedBy = "requesterId")
+    private Set<Friendship> friendList = new HashSet<>();
 
 
     @ManyToMany
@@ -55,7 +52,9 @@ public class Member {
         this.username = username;
         this.password = password;
     }
-
+    public Integer getId(){
+        return id;
+    }
     public String getFirstname() {
         return firstname;
     }
@@ -104,11 +103,11 @@ public class Member {
         this.active = active;
     }
 
-    public Set<Member> getFriendList() {
+    public Set<Friendship> getFriendList() {
         return friendList;
     }
 
-    public void setFriendList(Set<Member> friendList) {
+    public void setFriendList(Set<Friendship> friendList) {
         this.friendList = friendList;
     }
 
@@ -121,18 +120,18 @@ public class Member {
         this.blockList = blockList;
     }
 
-    public void addMemberFriend(Member member){
-        if(CollectionUtils.isEmpty(this.friendList)){
-            this.friendList = new HashSet<>();
-        }
-        this.friendList.add(member);
-    }
-
-    public void removeMemberFriend(Member member){
-        if(this.friendList.contains(member)){
-            this.friendList.remove(member);
-        }
-    }
+//    public void addMemberFriend(Member member){
+//        if(CollectionUtils.isEmpty(this.friendList)){
+//            this.friendList = new HashSet<>();
+//        }
+//        this.friendList.add(m);
+//    }
+//
+//    public void removeMemberFriend(Member member){
+//        if(this.friendList.contains(member)){
+//            this.friendList.remove(member);
+//        }
+//    }
 
     public void addMemberBlock(Member member){
         if(CollectionUtils.isEmpty(this.blockList)){

@@ -13,6 +13,14 @@ public class MemberBlock {
     @Column
     private int blockId;
 
+    public MemberBlock(){
+
+    }
+    public MemberBlock(Member member, int blockId) {
+        this.member = member;
+        this.blockId = blockId;
+    }
+
     public Member getMember() {
         return member;
     }

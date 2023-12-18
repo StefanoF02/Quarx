@@ -3,7 +3,6 @@ package com.quarx.Quarx.service;
 import com.quarx.Quarx.entity.Member;
 
 import java.util.List;
-import java.util.Set;
 
 
 public interface MemberService {
@@ -18,6 +17,6 @@ public interface MemberService {
 
     public void delete(Integer id);
 
-    public Set<Member> getFriendList(String email);
+//    public Set<Member> getFriendList(String email);
 
 }
