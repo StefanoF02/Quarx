@@ -30,8 +30,8 @@ public class FriendshipController {
     }
 
     @GetMapping("/status")
-    public void getStatus(@RequestParam String email){
-
+    public String getStatus(@RequestParam String ownerMail, @RequestParam String friendMail){
+        return friendshipService.getFriendshipStatus(ownerMail,friendMail);
     }
 
     @GetMapping("/friendship")

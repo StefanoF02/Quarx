@@ -42,8 +42,13 @@ public class FriendshipServiceImpl implements FriendshipService {
     }
 
     @Override
-    public String getFriendshipStatus(Integer id) {
-        return null;
+    public String getFriendshipStatus(String ownerMail, String friendMail) {
+        Integer ownerId = memberDAO.getByEmail(ownerMail).getId();
+
+        Member friend = memberDAO.getByEmail(friendMail);
+
+        Friendship friendship = friendshipDAO.findFriendship(ownerId, friend);
+        return friendship.getStatus();
     }
 
     @Override
