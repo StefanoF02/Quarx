@@ -5,6 +5,8 @@ import com.quarx.Quarx.service.FriendshipService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Set;
+
 @RestController()
 @RequestMapping("/friend")
 public class FriendshipController {
@@ -21,10 +23,20 @@ public class FriendshipController {
         return friendshipService.addFriend(emailRequest,emailReceiver);
     }
 
-    @GetMapping("/friends")
-    public Set<Member> getFriendList(@RequestParam String email){
+    @GetMapping("/all")
+    public Set<Friendship> getFriendList(@RequestParam String email){
 
-        return friendshipService.getFriendList(email);
+        return friendshipService.getFriends(email);
+    }
+
+    @GetMapping("/status")
+    public void getStatus(@RequestParam String email){
+
+    }
+
+    @GetMapping("/friendship")
+    public Friendship getFriendship(@RequestParam String ownerMail, @RequestParam String friendMail){
+        return friendshipService.findFriendship(ownerMail,friendMail);
     }
 
 //    @DeleteMapping("/remove")

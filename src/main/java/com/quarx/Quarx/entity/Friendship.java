@@ -1,17 +1,22 @@
 package com.quarx.Quarx.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
 public class Friendship {
     @Id
     @Column(nullable = false)
-    private Integer requesterId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
+    private Integer friendshipId;
 
-
+    @Column
+    @JsonIgnore
+    private Integer ownerId;
     @ManyToOne
     @JoinColumn(name = "memberId",nullable = false)
-    private Member friendId;
+    private Member friend;
 
     @Column
     private String addedAt;
@@ -21,27 +26,28 @@ public class Friendship {
     public Friendship(){
 
     }
-    public Friendship(Integer requesterId, Member friendId, String addedAt, String status) {
-        this.requesterId = requesterId;
-        this.friendId = friendId;
+    public Friendship(Integer ownerId, Member friend, String addedAt, String status) {
+        this.ownerId = ownerId;
+        this.friend = friend;
         this.addedAt = addedAt;
         this.status = status;
     }
+    public Integer getFriendshipId(){return friendshipId;}
 
-    public Integer getRequesterId() {
-        return requesterId;
+    public Integer getOwnerId() {
+        return ownerId;
     }
 
-    public void setRequesterId(Integer requesterId) {
-        this.requesterId = requesterId;
+    public void setOwnerId(Integer ownerId) {
+        this.ownerId = ownerId;
     }
 
     public Member getFriendId() {
-        return friendId;
+        return friend;
     }
 
     public void setFriendId(Member friendId) {
-        this.friendId = friendId;
+        this.friend = friendId;
     }
 
     public String getAddedAt() {
@@ -63,8 +69,9 @@ public class Friendship {
     @Override
     public String toString() {
         return "Friendship{" +
-                "requesterId=" + requesterId +
-                ", friendId=" + friendId +
+                "friendship_id=" + friendshipId +
+                ", ownerId=" + ownerId +
+                ", friend=" + friend +
                 ", addedAt='" + addedAt + '\'' +
                 ", status='" + status + '\'' +
                 '}';

@@ -33,13 +33,29 @@ public class FriendshipServiceImpl implements FriendshipService {
     }
 
     @Override
+    public Friendship findFriendship(String ownerMail, String friendMail) {
+        Member member = memberDAO.getByEmail(ownerMail);
+
+        Member friend = memberDAO.getByEmail(friendMail);
+
+        return friendshipDAO.findFriendship(member.getId(),friend);
+    }
+
+    @Override
+    public String getFriendshipStatus(Integer id) {
+        return null;
+    }
+
+    @Override
     public String removeFriend(String emailRequest, String emailReceiver) {
         return null;
     }
 
     @Override
-    public Set<Member> getFriends(String email) {
-        friendshipDAO.
+    public Set<Friendship> getFriends(String email) {
+        Integer request= memberDAO.getByEmail(email).getId();
+
+        return friendshipDAO.getFriendsByOwner(request);
     }
 
 //    @Override

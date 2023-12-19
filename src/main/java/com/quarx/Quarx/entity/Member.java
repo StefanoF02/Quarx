@@ -1,6 +1,7 @@
 package com.quarx.Quarx.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.springframework.util.CollectionUtils;
 
@@ -11,6 +12,7 @@ import java.util.Set;
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private Integer id;
 
     @Column(name = "firstname", nullable = false)
@@ -22,12 +24,15 @@ public class Member {
     @Column(name = "username", nullable = false, unique = true)
     private String username;
     @Column(name = "password", nullable = false)
+    @JsonIgnore
     private String password;
     @Column(name = "active")
+    @JsonIgnore
     private Integer active = 1;
 
 
-    @OneToMany(mappedBy = "requesterId")
+    @OneToMany(mappedBy = "ownerId")
+    @JsonIgnore
     private Set<Friendship> friendList = new HashSet<>();
 
 
@@ -35,6 +40,7 @@ public class Member {
     @JoinTable(name = "member_blocks",
         joinColumns = @JoinColumn(name = "memberId"),
         inverseJoinColumns = @JoinColumn(name = "blockId"))
+    @JsonIgnore
     private Set<Member> blockList = new HashSet<>();
 
     @OneToMany(mappedBy = "creator")

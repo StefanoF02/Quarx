@@ -19,26 +19,46 @@ public class FriendshipDAOImpl implements FriendshipDAO {
         this.entityManager = entityManager;
     }
     @Override
-    public Friendship findByID(Integer id) {
-        TypedQuery<Friendship> memberFriendTypedQuery = entityManager.createQuery("FROM Member_friends WHERE requester_id=:requestedID", Friendship.class);
-        memberFriendTypedQuery.setParameter("requestedID", id);
-        Friendship friendship = memberFriendTypedQuery.getSingleResult();
+    public Friendship findByOwnerId(Integer id) {
+        TypedQuery<Friendship> ownertypedQuery = entityManager.createQuery("FROM Friendship WHERE ownerId=:requestedID", Friendship.class);
+        ownertypedQuery.setParameter("requestedID", id);
+        Friendship friendship = ownertypedQuery.getSingleResult();
         return friendship;
     }
 
     @Override
+    public Friendship findFriendship(Integer ownerId, Member friend) {
+        TypedQuery<Friendship> friendshipTypedQuery = entityManager.createQuery("FROM Friendship WHERE ownerId=:ownerId AND friend=:friend", Friendship.class);
+
+        friendshipTypedQuery.setParameter("ownerId", ownerId);
+        friendshipTypedQuery.setParameter("friend", friend);
+        Friendship friendship = friendshipTypedQuery.getSingleResult();
+        return friendshipTypedQuery.getSingleResult();
+    }
+
+    @Override
     @Transactional
-    public void saveUpdateFriendship(Integer request, Member receiver, String date, String status) {
-        Friendship newFriendship = new Friendship(request,receiver,date, status);
+    public void saveUpdateFriendship(Integer ownerId, Member receiver, String date, String status) {
+        Friendship newFriendship = new Friendship(ownerId,receiver,date, status);
         entityManager.persist(newFriendship);
     }
 
     @Override
-    public Set<Member> getFriends(Integer requestId) {
-        TypedQuery<Friendship> memberFriendTypedQuery = entityManager.createQuery("FROM Friendship WHERE requester_id=:requestedID", Friendship.class);
-        memberFriendTypedQuery.setParameter("requestedID", requestId);
-        Set<Member> friends = memberFriendTypedQuery.getResultList();
+    public String getFriendshipStatus(Integer ownerId, Integer friendId) {
 
+        return null;
+    }
+
+    @Override
+    public Set<Friendship> getFriendsByOwner(Integer id) {
+//
+//        TypedQuery<Member> friendshipTypedQuery = entityManager.createQuery("FROM Friendship WHERE request_id=:id", Member.class);
+//
+//        friendshipTypedQuery.setParameter("id", id);
+//        System.out.println("Post");
+//        List<Member> friends = friendshipTypedQuery.getResultList();
+//        System.out.println(friends);
+        return entityManager.find(Member.class, id).getFriendList();
     }
 
 }

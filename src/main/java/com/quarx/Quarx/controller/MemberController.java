@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/members")
+@RequestMapping("/member")
 public class MemberController {
 
     private MemberService memberService;
@@ -32,9 +32,9 @@ public class MemberController {
 //
 //    }
 
-    @GetMapping("/{id}")
-    public ResponseEntity getSingleMember(@PathVariable Integer id){
-        Member member = memberService.getMember(id);
+    @GetMapping("/get")
+    public ResponseEntity getSingleMember(@RequestParam String email){
+        Member member = memberService.getByEmail(email);
         if( member == null){
             throw new MemberException("Member not found");
         }
