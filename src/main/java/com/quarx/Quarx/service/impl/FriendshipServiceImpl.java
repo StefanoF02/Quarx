@@ -26,79 +26,85 @@ public class FriendshipServiceImpl implements FriendshipService {
     @Override
     @Transactional
     public Friendship addFriend(String emailRequest, String emailReceiver) {
+
         Integer request= memberDAO.getByEmail(emailRequest).getId();
-        Member friendId = memberDAO.getByEmail(emailReceiver);
-        friendshipDAO.saveUpdateFriendship(request,friendId,"18.12.2023", "pending");
-        return null;
+        Member friend= memberDAO.getByEmail(emailReceiver);
+        if(friendshipDAO.findFriendship(request,friend).isEmpty()){
+            Friendship newFriendship = new Friendship(request,friend,"18.12.2023", "pending" );
+            friendshipDAO.saveUpdateFriendship(newFriendship);
+            return newFriendship;
+        }
+        return friendshipDAO.findFriendship(request,friend).get();
+    }
+
+
+
+    @Override
+    @Transactional
+    public Friendship acceptFriend(String emailRequest, String emailReceiver) {
+        Integer ownerId = memberDAO.getByEmail(emailRequest).getId();
+
+        Member friend = memberDAO.getByEmail(emailReceiver);
+
+        Friendship friendship = friendshipDAO.findFriendship(ownerId, friend).get();
+
+        friendship.setStatus("accepted");
+        friendshipDAO.saveUpdateFriendship(friendship);
+        return friendship;
     }
 
     @Override
-    public Friendship findFriendship(String ownerMail, String friendMail) {
-        Member member = memberDAO.getByEmail(ownerMail);
+    @Transactional
+    public void declineFriend(String emailRequest, String emailReceiver) {
+        Integer ownerId = memberDAO.getByEmail(emailRequest).getId();
 
-        Member friend = memberDAO.getByEmail(friendMail);
+        Member friend = memberDAO.getByEmail(emailReceiver);
 
-        return friendshipDAO.findFriendship(member.getId(),friend);
+        Friendship friendship = friendshipDAO.findFriendship(ownerId, friend).get();
+
+        friendshipDAO.removeFriendship(friendship);
+
     }
 
     @Override
-    public String getFriendshipStatus(String ownerMail, String friendMail) {
-        Integer ownerId = memberDAO.getByEmail(ownerMail).getId();
+    public Friendship findFriendship(String emailRequest, String emailReceiver) {
+        Member member = memberDAO.getByEmail(emailRequest);
 
-        Member friend = memberDAO.getByEmail(friendMail);
+        Member friend = memberDAO.getByEmail(emailReceiver);
 
-        Friendship friendship = friendshipDAO.findFriendship(ownerId, friend);
+        return friendshipDAO.findFriendship(member.getId(), friend).get();
+    }
+
+    @Override
+    public Set<Friendship> getFriends(String emailRequest) {
+        Integer request = memberDAO.getByEmail(emailRequest).getId();
+
+        return friendshipDAO.getFriendsByOwner(request);
+    }
+
+    @Override
+    public String getFriendshipStatus(String emailRequest, String emailReceiver) {
+        Integer ownerId = memberDAO.getByEmail(emailRequest).getId();
+
+        Member friend = memberDAO.getByEmail(emailReceiver);
+
+        Friendship friendship = friendshipDAO.findFriendship(ownerId, friend).get();
         return friendship.getStatus();
     }
 
     @Override
     public String removeFriend(String emailRequest, String emailReceiver) {
-        return null;
+        Integer ownerId = memberDAO.getByEmail(emailRequest).getId();
+
+        Member friend = memberDAO.getByEmail(emailReceiver);
+
+        Friendship friendship = friendshipDAO.findFriendship(ownerId, friend).get();
+        if (friendship.getStatus().equals("pending") || friendship == null) {
+            return "Can't remove friend, she's/he's not in your friendlist";
+        }
+        friendshipDAO.removeFriendship(friendship);
+        return "removed friend";
     }
 
-    @Override
-    public Set<Friendship> getFriends(String email) {
-        Integer request= memberDAO.getByEmail(email).getId();
-
-        return friendshipDAO.getFriendsByOwner(request);
-    }
-
-//    @Override
-//    @Transactional
-//    public ResponseEntity<Map<String, Object>> addFriend(String emailRequest, String emailReceiver) {
-//        Member request = memberDAO.getByEmail(emailRequest);
-//        Member receiver = memberDAO.getByEmail(emailReceiver);
-//        if (emailReceiver.equals(emailRequest)) {
-//            return new ResponseEntity("Email must differ", HttpStatus.BAD_REQUEST);
-//        }
-//        if (request.getFriendList().contains(receiver)) {
-//            return new ResponseEntity("You're already friends", HttpStatus.BAD_REQUEST);
-//        }
-//        if(request.getBlockList().contains(receiver)){
-//            return new ResponseEntity("Please remove member : " + emailReceiver + " from your block list", HttpStatus.BAD_REQUEST);
-//        }
-////        request.addMemberFriend(receiver);
-//
-//        memberDAO.saveUpdate(request);
-//        MemberFriend memberFriend = memberFriendDAO.findByID(request.getId());
-//
-//        return new ResponseEntity("Friend added", HttpStatus.OK);
-//    }
-//
-//    @Override
-//    @Transactional
-//    public ResponseEntity<Map<String, Object>> removeFriend(String emailRequest, String emailReceiver) {
-//        Member request = memberDAO.getByEmail(emailRequest);
-//        Member receiver = memberDAO.getByEmail(emailReceiver);
-//        if (emailReceiver.equals(emailRequest)) {
-//            return new ResponseEntity("You're your only friend :( ", HttpStatus.BAD_REQUEST);
-//        }
-//        if (!request.getFriendList().contains(receiver)) {
-//            return new ResponseEntity("No friend with email: " + emailReceiver + " available", HttpStatus.BAD_REQUEST);
-//        }
-////        request.removeMemberFriend(receiver);
-//        memberDAO.saveUpdate(request);
-//        return new ResponseEntity("Removed friend", HttpStatus.OK);
-//    }
 
 }

@@ -7,6 +7,8 @@ import java.util.Set;
 public interface FriendshipService {
 
     public Friendship addFriend(String emailRequest, String emailReceiver);
+    public Friendship acceptFriend(String ownerMail, String friendMail);
+    public void declineFriend(String ownerMail, String friendMail);
     public Friendship findFriendship(String ownerMail, String friendMail);
     public String getFriendshipStatus(String ownerMail, String friendMail);
     public String removeFriend(String emailRequest, String emailReceiver);

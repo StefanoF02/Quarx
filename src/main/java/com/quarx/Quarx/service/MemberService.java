@@ -17,6 +17,5 @@ public interface MemberService {
 
     public void delete(Integer id);
 
-//    public Set<Member> getFriendList(String email);
 
 }

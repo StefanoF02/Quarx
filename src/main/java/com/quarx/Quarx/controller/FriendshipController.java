@@ -22,6 +22,15 @@ public class FriendshipController {
 
         return friendshipService.addFriend(emailRequest,emailReceiver);
     }
+    @PostMapping("/accept")
+    public String acceptFriend(@RequestParam String emailRequest, @RequestParam String emailReceiver){
+        Friendship acceptedFriendship = friendshipService.acceptFriend(emailRequest,emailReceiver);
+        if(acceptedFriendship.getStatus().equals("accepted")){
+            return "Accepted a new friendship sir";
+        }
+        return "Error";
+    }
+
 
     @GetMapping("/all")
     public Set<Friendship> getFriendList(@RequestParam String email){
@@ -34,13 +43,19 @@ public class FriendshipController {
         return friendshipService.getFriendshipStatus(ownerMail,friendMail);
     }
 
+
     @GetMapping("/friendship")
     public Friendship getFriendship(@RequestParam String ownerMail, @RequestParam String friendMail){
         return friendshipService.findFriendship(ownerMail,friendMail);
     }
 
-//    @DeleteMapping("/remove")
-//    public ResponseEntity removeFriendship(@RequestParam String emailRequest, @RequestParam String emailReceiver){
-//        return memberFriendServiceImpl.removeFriend(emailRequest,emailReceiver);
-//    }
+    @DeleteMapping("/decline")
+    public void declineFriendship(@RequestParam String emailRequest, @RequestParam String emailReceiver){
+        friendshipService.declineFriend(emailRequest,emailReceiver);
+    }
+
+    @DeleteMapping("/remove")
+    public String removeFriend(@RequestParam String emailRequest, @RequestParam String emailReceiver){
+        return friendshipService.removeFriend(emailRequest,emailReceiver);
+    }
 }

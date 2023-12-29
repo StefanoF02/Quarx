@@ -8,6 +8,7 @@ import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
 import java.util.Set;
 
 @Repository
@@ -27,27 +28,29 @@ public class FriendshipDAOImpl implements FriendshipDAO {
     }
 
     @Override
-    public Friendship findFriendship(Integer ownerId, Member friend) {
+    public Optional<Friendship> findFriendship(Integer ownerId, Member friend) {
         TypedQuery<Friendship> friendshipTypedQuery = entityManager.createQuery("FROM Friendship WHERE ownerId=:ownerId AND friend=:friend", Friendship.class);
 
         friendshipTypedQuery.setParameter("ownerId", ownerId);
         friendshipTypedQuery.setParameter("friend", friend);
-        Friendship friendship = friendshipTypedQuery.getSingleResult();
-        return friendshipTypedQuery.getSingleResult();
+        Optional<Friendship> friendship = Optional.of(friendshipTypedQuery.getSingleResult());
+        if(friendship.isEmpty()){
+            return null;
+        }
+        return friendship;
     }
 
     @Override
     @Transactional
-    public void saveUpdateFriendship(Integer ownerId, Member receiver, String date, String status) {
-        Friendship newFriendship = new Friendship(ownerId,receiver,date, status);
-        entityManager.persist(newFriendship);
+    public void saveUpdateFriendship(Friendship newFriendship) {
+        entityManager.merge(newFriendship);
     }
 
     @Override
-    public String getFriendshipStatus(Integer ownerId, Integer friendId) {
-
-        return null;
+    public void removeFriendship(Friendship friendship) {
+        entityManager.remove(friendship);
     }
+
 
     @Override
     public Set<Friendship> getFriendsByOwner(Integer id) {
