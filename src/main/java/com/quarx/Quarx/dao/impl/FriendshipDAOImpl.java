@@ -8,6 +8,7 @@ import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -33,10 +34,11 @@ public class FriendshipDAOImpl implements FriendshipDAO {
 
         friendshipTypedQuery.setParameter("ownerId", ownerId);
         friendshipTypedQuery.setParameter("friend", friend);
-        Optional<Friendship> friendship = Optional.of(friendshipTypedQuery.getSingleResult());
-        if(friendship.isEmpty()){
+        if((friendshipTypedQuery.getResultList().isEmpty())){
             return null;
         }
+
+        Optional<Friendship> friendship = Optional.of(friendshipTypedQuery.getSingleResult());
         return friendship;
     }
 
@@ -54,14 +56,14 @@ public class FriendshipDAOImpl implements FriendshipDAO {
 
     @Override
     public Set<Friendship> getFriendsByOwner(Integer id) {
-//
-//        TypedQuery<Member> friendshipTypedQuery = entityManager.createQuery("FROM Friendship WHERE request_id=:id", Member.class);
-//
-//        friendshipTypedQuery.setParameter("id", id);
-//        System.out.println("Post");
-//        List<Member> friends = friendshipTypedQuery.getResultList();
-//        System.out.println(friends);
-        return entityManager.find(Member.class, id).getFriendList();
+        Set<Friendship> friends = entityManager.find(Member.class, id).getFriendList();
+        Set<Friendship> filterdList = new HashSet<>();
+        for(Friendship filterdFriends: friends){
+            if(filterdFriends.getStatus().equals("accepted")){
+                filterdList.add(filterdFriends);
+            }
+        }
+        return filterdList;
     }
 
 }
