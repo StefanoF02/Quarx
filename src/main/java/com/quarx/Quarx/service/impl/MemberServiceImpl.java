@@ -1,6 +1,7 @@
 package com.quarx.Quarx.service.impl;
 
 import com.quarx.Quarx.dao.MemberDAO;
+import com.quarx.Quarx.dao.RoleDAO;
 import com.quarx.Quarx.entity.Member;
 import com.quarx.Quarx.service.MemberService;
 import jakarta.transaction.Transactional;
@@ -12,9 +13,11 @@ import java.util.List;
 public class MemberServiceImpl implements MemberService {
 
     private MemberDAO memberDAO;
+    private RoleDAO roleDAO;
 
-    public MemberServiceImpl(MemberDAO memberDAO){
+    public MemberServiceImpl(MemberDAO memberDAO, RoleDAO roleDAO){
         this.memberDAO = memberDAO;
+        this.roleDAO = roleDAO;
     }
 
     @Override

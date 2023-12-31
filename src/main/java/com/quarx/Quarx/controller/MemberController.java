@@ -30,8 +30,7 @@ public class MemberController {
 //        memberService.saveUpdate(member3);
 //        memberService.saveUpdate(member4);
 //
-//    }
-
+//    }g
     @GetMapping("/get")
     public ResponseEntity getSingleMember(@RequestParam String email){
         Member member = memberService.getByEmail(email);

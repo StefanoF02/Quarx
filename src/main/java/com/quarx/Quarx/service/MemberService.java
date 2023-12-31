@@ -17,5 +17,4 @@ public interface MemberService {
 
     public void delete(Integer id);
 
-
 }

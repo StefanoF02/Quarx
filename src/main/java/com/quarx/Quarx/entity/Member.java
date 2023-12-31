@@ -30,6 +30,14 @@ public class Member {
     @JsonIgnore
     private Integer active = 1;
 
+    @ManyToMany
+    @JoinTable(
+            name = "member_has_role",
+            joinColumns = @JoinColumn(
+                    name = "member_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "role_id", referencedColumnName = "id"))
+    private Set<Role> roles = new HashSet<>();
 
     @OneToMany(mappedBy = "ownerId")
     @JsonIgnore
